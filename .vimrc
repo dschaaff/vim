@@ -26,6 +26,7 @@ filetype plugin indent on
 syntax enable
 " load pathogen
 execute pathogen#infect()
+colorscheme jellybeans
 set guifont=Source\ Code\ Pro\ for\ Powerline:h12
 set mouse=a
 let g:airline_powerline_fonts = 1
@@ -38,7 +39,7 @@ let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 set fillchars+=stl:\ ,stlnc:\
 autocmd StdinReadPre * let s:std_in=1
-" autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 augroup configgroup
     autocmd!
     autocmd VimEnter * highlight clear SignColumn
