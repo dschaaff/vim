@@ -26,7 +26,7 @@ filetype plugin indent on
 syntax enable
 " load pathogen
 execute pathogen#infect()
-colorscheme jellybeans
+colorscheme solarized
 set guifont=Source\ Code\ Pro\ for\ Powerline:h12
 set mouse=a
 let g:airline_powerline_fonts = 1

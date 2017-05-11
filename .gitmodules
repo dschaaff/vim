@@ -34,3 +34,6 @@
 [submodule "bundle/logstash"]
 	path = bundle/logstash
 	url = git@github.com:robbles/logstash.vim.git
+[submodule "bundle/base16-vim"]
+	path = bundle/base16-vim
+	url = https://github.com/chriskempson/base16-vim.git
