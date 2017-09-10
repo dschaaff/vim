@@ -1,11 +1,16 @@
-set t_Co=256
-set background=dark
+if $COLORTERM == 'gnome-terminal'
+   set t_Co=256
+endif
 " show line numbering
 set number
+" Set to auto read when is changed outside vim
+set autoread
 " number of visual spaces per tab
-set tabstop=4
+set tabstop=2
+" use smar tabs http://vim.wikia.com/wiki/Indent_with_tabs,_align_with_spaces
+set smarttab
 " number of spaces when editing
-set softtabstop=4
+set softtabstop=2
 " spaces are better then tabs ;)
 set expandtab
 " highlight current line
@@ -20,16 +25,41 @@ set showmatch
 set hlsearch
 " search as characters entered
 set incsearch
+" ignore case when searching
+set ignorecase
+" autowrap lines http://vim.wikia.com/wiki/Automatically_wrap_left_and_right
+set whichwrap+=<,>,h,l,[,]
+" turn on wild menu completions
+set wildmenu
+" normal backspace
+" show matching brackets
+set showmatch
+set backspace=indent,eol,start
 syntax on
 " load file type specific indent files
-filetype plugin indent on
+filetype plugin on
+filetype indent on
+" Return to last edit position when opening files (You want this!)
+au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 syntax enable
 " load pathogen
 execute pathogen#infect()
-colorscheme jellybeans
+try
+  colorscheme solarized
+catch
+endtry
+set background=dark
+if has("gui_running")
+   set guioptions-=T
+   set guioptions-=e
+   set t_Co=256
+   set guitablabel=%M\ %t
+endif
+set encoding=utf8
 set guifont=Source\ Code\ Pro\ for\ Powerline:h12
 set mouse=a
 let g:airline_powerline_fonts = 1
+" always show status bar
 set laststatus=2
 if !exists('g:airline_symbols')
   let g:airline_symbols = {}
