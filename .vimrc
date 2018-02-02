@@ -1,3 +1,34 @@
+" Specify a directory for plugins
+" - For Neovim: ~/.local/share/nvim/plugged
+" - Avoid using standard Vim directory names like 'plugin'
+call plug#begin('~/.vim/plugged')
+" https://github.com/airblade/vim-gitgutter
+Plug 'airblade/vim-gitgutter'
+" https://github.com/ekalinin/Dockerfile.vim
+Plug 'ekalinin/Dockerfile.vim'
+" https://github.com/hashivim/vim-terraform
+Plug 'hashivim/vim-terraform'
+Plug 'juliosueiras/vim-terraform-completion'
+Plug 'hashivim/vim-packer'
+Plug 'hashivim/vim-vagrant'
+Plug 'hashivim/vim-consul'
+Plug 'hashivim/vim-vaultproject'
+" https://github.com/tpope/vim-markdown
+Plug 'tpope/vim-markdown'
+Plug 'tpope/vim-fugitive'
+" https://github.com/rodjek/vim-puppet
+Plug 'rodjek/vim-puppet'
+Plug 'tpope/vim-fireplace'
+" https://github.com/tpope/vim-surround
+Plug 'tpope/vim-surround'
+Plug 'scrooloose/nerdtree'
+Plug 'vim-syntastic/syntastic'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+" https://github.com/majutsushi/tagbar
+Plug 'majutsushi/tagbar'
+call plug#end()
+set nocompatible
 if $COLORTERM == 'gnome-terminal'
    set t_Co=256
 endif
@@ -42,8 +73,6 @@ filetype indent on
 " Return to last edit position when opening files (You want this!)
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 syntax enable
-" load pathogen
-execute pathogen#infect()
 " stop hiding quotes in json
 set conceallevel=0
 try
