@@ -44,6 +44,8 @@ au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g
 syntax enable
 " load pathogen
 execute pathogen#infect()
+" stop hiding quotes in json
+set conceallevel=0
 try
   colorscheme solarized
 catch
