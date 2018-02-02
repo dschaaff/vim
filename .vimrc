@@ -27,6 +27,7 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 " https://github.com/majutsushi/tagbar
 Plug 'majutsushi/tagbar'
+Plug 'elzr/vim-json'
 call plug#end()
 set nocompatible
 if $COLORTERM == 'gnome-terminal'
@@ -74,7 +75,7 @@ filetype indent on
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 syntax enable
 " stop hiding quotes in json
-set conceallevel=0
+let g:vim_json_syntax_conceal = 0
 try
   colorscheme solarized
 catch
