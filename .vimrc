@@ -8,6 +8,7 @@ Plug 'airblade/vim-gitgutter'
 Plug 'ekalinin/Dockerfile.vim'
 " https://github.com/hashivim/vim-terraform
 Plug 'hashivim/vim-terraform'
+Plug 'vim-syntastic/syntastic'
 Plug 'juliosueiras/vim-terraform-completion'
 Plug 'hashivim/vim-packer'
 Plug 'hashivim/vim-vagrant'
@@ -22,12 +23,12 @@ Plug 'tpope/vim-fireplace'
 " https://github.com/tpope/vim-surround
 Plug 'tpope/vim-surround'
 Plug 'scrooloose/nerdtree'
-Plug 'vim-syntastic/syntastic'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 " https://github.com/majutsushi/tagbar
 Plug 'majutsushi/tagbar'
 Plug 'elzr/vim-json'
+Plug 'luochen1990/rainbow'
 call plug#end()
 set nocompatible
 if $COLORTERM == 'gnome-terminal'
@@ -70,7 +71,8 @@ set backspace=indent,eol,start
 syntax on
 " load file type specific indent files
 filetype plugin on
-filetype indent on
+let g:rainbow_active = 1
+set omnifunc=syntaxcomplete#Complete
 " Return to last edit position when opening files (You want this!)
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 syntax enable
