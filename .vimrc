@@ -20,6 +20,9 @@ Plug 'tpope/vim-fugitive'
 " https://github.com/rodjek/vim-puppet
 Plug 'rodjek/vim-puppet'
 Plug 'tpope/vim-fireplace'
+Plug 'guns/vim-clojure-static'
+Plug 'clojure-vim/vim-cider'
+Plug 'majutsushi/tagbar'
 " https://github.com/tpope/vim-surround
 Plug 'tpope/vim-surround'
 Plug 'scrooloose/nerdtree'
@@ -29,6 +32,9 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'majutsushi/tagbar'
 Plug 'elzr/vim-json'
 Plug 'luochen1990/rainbow'
+if has('nvim')
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+endif
 call plug#end()
 set nocompatible
 if $COLORTERM == 'gnome-terminal'
@@ -72,7 +78,8 @@ syntax on
 " load file type specific indent files
 filetype plugin on
 let g:rainbow_active = 1
-set omnifunc=syntaxcomplete#Complete
+" set omnifunc=syntaxcomplete#Complete
+let g:deoplete#enable_at_startup = 1
 " Return to last edit position when opening files (You want this!)
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 syntax enable
