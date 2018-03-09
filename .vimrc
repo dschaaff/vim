@@ -20,11 +20,13 @@ Plug 'tpope/vim-fugitive'
 " https://github.com/rodjek/vim-puppet
 Plug 'rodjek/vim-puppet'
 Plug 'tpope/vim-fireplace'
+Plug 'venantius/vim-eastwood'
 Plug 'guns/vim-clojure-static'
 Plug 'clojure-vim/vim-cider'
 Plug 'majutsushi/tagbar'
 " https://github.com/tpope/vim-surround
 Plug 'tpope/vim-surround'
+Plug 'tpope/vim-unimpaired'
 Plug 'scrooloose/nerdtree'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
@@ -32,6 +34,7 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'majutsushi/tagbar'
 Plug 'elzr/vim-json'
 Plug 'luochen1990/rainbow'
+Plug 'iCyMind/NeoSolarized'
 if has('nvim')
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 endif
@@ -74,6 +77,8 @@ set wildmenu
 " show matching brackets
 set showmatch
 set backspace=indent,eol,start
+" set leader
+:let mapleader = ","
 syntax on
 " load file type specific indent files
 filetype plugin on
@@ -85,19 +90,17 @@ au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g
 syntax enable
 " stop hiding quotes in json
 let g:vim_json_syntax_conceal = 0
+" system clipboard
+set clipboard=unnamed
 try
-  colorscheme solarized
+  colorscheme NeoSolarized
 catch
 endtry
 set background=dark
-if has("gui_running")
-   set guioptions-=T
-   set guioptions-=e
-   set t_Co=256
-   set guitablabel=%M\ %t
-endif
+"if has("gui_running")
+"  colorscheme solarized
+"endif
 set encoding=utf8
-set guifont=Source\ Code\ Pro\ for\ Powerline:h12
 set mouse=a
 let g:airline_powerline_fonts = 1
 " always show status bar
