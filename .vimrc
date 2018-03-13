@@ -8,7 +8,8 @@ Plug 'airblade/vim-gitgutter'
 Plug 'ekalinin/Dockerfile.vim'
 " https://github.com/hashivim/vim-terraform
 Plug 'hashivim/vim-terraform'
-Plug 'vim-syntastic/syntastic'
+" Plug 'vim-syntastic/syntastic'
+Plug 'w0rp/ale'
 Plug 'juliosueiras/vim-terraform-completion'
 Plug 'hashivim/vim-packer'
 Plug 'hashivim/vim-vagrant'
@@ -35,6 +36,9 @@ Plug 'majutsushi/tagbar'
 Plug 'elzr/vim-json'
 Plug 'luochen1990/rainbow'
 Plug 'iCyMind/NeoSolarized'
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'tpope/vim-endwise'
+Plug 'jiangmiao/auto-pairs'
 if has('nvim')
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 endif
@@ -103,6 +107,7 @@ set background=dark
 set encoding=utf8
 set mouse=a
 let g:airline_powerline_fonts = 1
+let g:airline#extensions#ale#enabled = 1
 " always show status bar
 set laststatus=2
 if !exists('g:airline_symbols')
@@ -111,6 +116,8 @@ endif
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
+" auto fmt terraform files on save
+let g:terraform_fmt_on_save=1
 set fillchars+=stl:\ ,stlnc:\
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
@@ -138,3 +145,11 @@ augroup configgroup
     autocmd BufEnter *.sh setlocal shiftwidth=2
     autocmd BufEnter *.sh setlocal softtabstop=2
 augroup END
+" Put these lines at the very end of your vimrc file.
+
+" Load all plugins now.
+" Plugins need to be added to runtimepath before helptags can be generated.
+packloadall
+" Load all of the helptags now, after plugins have been loaded.
+" All messages and errors will be ignored.
+silent! helptags ALL
