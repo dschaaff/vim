@@ -28,18 +28,24 @@ Plug 'majutsushi/tagbar'
 " https://github.com/tpope/vim-surround
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
+" easily comment stuff in/out
+Plug 'tpope/vim-commentary'
 Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 " https://github.com/majutsushi/tagbar
 Plug 'majutsushi/tagbar'
+" ruby and rails
+Plug 'vim-ruby/vim-ruby'
+Plug 'tpope/vim-rails'
 Plug 'elzr/vim-json'
 Plug 'luochen1990/rainbow'
 Plug 'iCyMind/NeoSolarized'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'tpope/vim-endwise'
 Plug 'jiangmiao/auto-pairs'
+Plug 'martinda/Jenkinsfile-vim-syntax'
 if has('nvim')
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 endif
