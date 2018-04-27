@@ -2,50 +2,63 @@
 " - For Neovim: ~/.local/share/nvim/plugged
 " - Avoid using standard Vim directory names like 'plugin'
 call plug#begin('~/.vim/plugged')
+" async linting
+Plug 'w0rp/ale'
 " https://github.com/airblade/vim-gitgutter
 Plug 'airblade/vim-gitgutter'
 " https://github.com/ekalinin/Dockerfile.vim
 Plug 'ekalinin/Dockerfile.vim'
-" https://github.com/hashivim/vim-terraform
+" haproxy syntax
+Plug 'zimbatm/haproxy.vim'
+" terraform stuff 
 Plug 'hashivim/vim-terraform'
-" Plug 'vim-syntastic/syntastic'
-Plug 'w0rp/ale'
 Plug 'juliosueiras/vim-terraform-completion'
 Plug 'hashivim/vim-packer'
 Plug 'hashivim/vim-vagrant'
 Plug 'hashivim/vim-consul'
 Plug 'hashivim/vim-vaultproject'
+" vim easymotion for moving around
+Plug 'easymotion/vim-easymotion'
 " https://github.com/tpope/vim-markdown
 Plug 'tpope/vim-markdown'
+" git support
 Plug 'tpope/vim-fugitive'
-" https://github.com/rodjek/vim-puppet
+" puppet stuff
 Plug 'rodjek/vim-puppet'
+" clojure support
 Plug 'tpope/vim-fireplace'
-Plug 'venantius/vim-eastwood'
 Plug 'guns/vim-clojure-static'
+Plug 'venantius/vim-eastwood'
 Plug 'clojure-vim/vim-cider'
+Plug 'luochen1990/rainbow'
+" ctags
 Plug 'majutsushi/tagbar'
-" https://github.com/tpope/vim-surround
+" tpope goodness
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
+Plug 'tpope/vim-sensible'
 " easily comment stuff in/out
 Plug 'tpope/vim-commentary'
+" nerdtree stuff
 Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
+" ablity to toggle indent guides
+Plug 'nathanaelkane/vim-indent-guides'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-" https://github.com/majutsushi/tagbar
-Plug 'majutsushi/tagbar'
 " ruby and rails
 Plug 'vim-ruby/vim-ruby'
 Plug 'tpope/vim-rails'
 Plug 'elzr/vim-json'
-Plug 'luochen1990/rainbow'
 Plug 'iCyMind/NeoSolarized'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'tpope/vim-endwise'
 Plug 'jiangmiao/auto-pairs'
 Plug 'martinda/Jenkinsfile-vim-syntax'
+" language server protocol support
+Plug 'prabirshrestha/async.vim'
+Plug 'prabirshrestha/vim-lsp'
+Plug 'yuttie/comfortable-motion.vim'
 if has('nvim')
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 endif
@@ -114,17 +127,30 @@ set background=dark
 set encoding=utf8
 set mouse=a
 let g:airline_powerline_fonts = 1
-let g:airline#extensions#ale#enabled = 1
 " always show status bar
 set laststatus=2
 if !exists('g:airline_symbols')
   let g:airline_symbols = {}
 endif
+" syntastic config
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
 " auto fmt terraform files on save
 let g:terraform_fmt_on_save=1
+" lsp configs
+if executable('solargraph')
+" gem install solargraph
+  au User lsp_setup call lsp#register_server({
+  \ 'name': 'solargraph',
+  \ 'cmd': {server_info->[&shell, &shellcmdflag, 'solargraph socket']}, 
+  \ 'whitelist': ['ruby'],
+  \ })
+endif
 set fillchars+=stl:\ ,stlnc:\
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
@@ -137,6 +163,9 @@ augroup configgroup
     autocmd FileType java setlocal list
     autocmd FileType java setlocal listchars=tab:+\ ,eol:-
     autocmd FileType java setlocal formatprg=par\ -w80\ -T4
+    autocmd FileType groovy setlocal tabstop=2
+    autocmd FileType groovy setlocal softtabstop=2
+    autocmd FileType groovy setlocal shiftwidth=2
     autocmd FileType php setlocal expandtab
     autocmd FileType php setlocal list
     autocmd FileType php setlocal listchars=tab:+\ ,eol:-
