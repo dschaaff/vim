@@ -34,11 +34,11 @@ Plug 'tpope/vim-fugitive'
 " puppet stuff
 Plug 'rodjek/vim-puppet'
 " clojure support
-Plug 'tpope/vim-fireplace'
-Plug 'guns/vim-clojure-static'
-Plug 'venantius/vim-eastwood'
-Plug 'clojure-vim/vim-cider'
-Plug 'luochen1990/rainbow'
+Plug 'tpope/vim-fireplace', { 'for': 'clojure' }
+Plug 'guns/vim-clojure-static', { 'for': 'clojure' }
+Plug 'venantius/vim-eastwood', { 'for': 'clojure' }
+Plug 'clojure-vim/vim-cider', { 'for': 'clojure' }
+Plug 'luochen1990/rainbow', { 'for': 'clojure' }
 " ctags
 Plug 'majutsushi/tagbar'
 " tpope goodness
