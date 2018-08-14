@@ -1,16 +1,25 @@
+" in case I'm not running neovim
+"
+set nocompatible
+" normal backspace
+set backspace=indent,eol,start
+
+" no need filetype to load plugins
+filetype off
+
+" plugins
 " Specify a directory for plugins
 " - For Neovim: ~/.local/share/nvim/plugged
 " - Avoid using standard Vim directory names like 'plugin'
 call plug#begin('~/.vim/plugged')
-" async linting
+" ale linter
 Plug 'w0rp/ale'
-" https://github.com/airblade/vim-gitgutter
+" git marks in gutter
 Plug 'airblade/vim-gitgutter'
-" https://github.com/ekalinin/Dockerfile.vim
 Plug 'ekalinin/Dockerfile.vim'
-" haproxy syntax
+" haproxy syntax highlighting
 Plug 'zimbatm/haproxy.vim'
-" terraform stuff 
+" Hashicorp stuff
 Plug 'hashivim/vim-terraform'
 Plug 'juliosueiras/vim-terraform-completion'
 Plug 'hashivim/vim-packer'
@@ -19,9 +28,8 @@ Plug 'hashivim/vim-consul'
 Plug 'hashivim/vim-vaultproject'
 " vim easymotion for moving around
 Plug 'easymotion/vim-easymotion'
-" https://github.com/tpope/vim-markdown
 Plug 'tpope/vim-markdown'
-" git support
+" Git support
 Plug 'tpope/vim-fugitive'
 " puppet stuff
 Plug 'rodjek/vim-puppet'
@@ -47,6 +55,7 @@ Plug 'nathanaelkane/vim-indent-guides'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 " ruby and rails
+Plug 'hackhowtofaq/vim-solargraph'
 Plug 'vim-ruby/vim-ruby'
 Plug 'tpope/vim-rails'
 Plug 'elzr/vim-json'
@@ -55,25 +64,19 @@ Plug 'ctrlpvim/ctrlp.vim'
 Plug 'tpope/vim-endwise'
 Plug 'jiangmiao/auto-pairs'
 Plug 'martinda/Jenkinsfile-vim-syntax'
-" language server protocol support
-Plug 'prabirshrestha/async.vim'
-Plug 'prabirshrestha/vim-lsp'
+" smooth scrolling
 Plug 'yuttie/comfortable-motion.vim'
 if has('nvim')
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 endif
 call plug#end()
-set nocompatible
-if $COLORTERM == 'gnome-terminal'
-   set t_Co=256
-endif
 " show line numbering
 set number
 " Set to auto read when is changed outside vim
 set autoread
 " number of visual spaces per tab
 set tabstop=2
-" use smar tabs http://vim.wikia.com/wiki/Indent_with_tabs,_align_with_spaces
+" use smart tabs http://vim.wikia.com/wiki/Indent_with_tabs,_align_with_spaces
 set smarttab
 " number of spaces when editing
 set softtabstop=2
@@ -97,41 +100,42 @@ set ignorecase
 set whichwrap+=<,>,h,l,[,]
 " turn on wild menu completions
 set wildmenu
-" normal backspace
 " show matching brackets
 set showmatch
-set backspace=indent,eol,start
-" set leader
-:let mapleader = ","
+" syntax highlighting
 syntax on
 " load file type specific indent files
 filetype plugin on
-let g:rainbow_active = 1
-" set omnifunc=syntaxcomplete#Complete
-let g:deoplete#enable_at_startup = 1
-" Return to last edit position when opening files (You want this!)
-au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
-syntax enable
 " stop hiding quotes in json
 let g:vim_json_syntax_conceal = 0
-" system clipboard
-set clipboard=unnamed
+" try to load neovim specific colorscheme
 try
   colorscheme NeoSolarized
 catch
 endtry
 set background=dark
-"if has("gui_running")
-"  colorscheme solarized
-"endif
 set encoding=utf8
 set mouse=a
-let g:airline_powerline_fonts = 1
 " always show status bar
 set laststatus=2
+" set leader
+:let mapleader = ","
+
+""""""""""""""""""""""""""""
+" plugin specific settings "
+""""""""""""""""""""""""""""
+
+" airline status bar
+let g:airline_powerline_fonts = 1
 if !exists('g:airline_symbols')
   let g:airline_symbols = {}
 endif
+" enable deoplete completions
+let g:deoplete#enable_at_startup = 1
+" terraform config
+let g:terraform_fmt_on_save=1
+" NerdTREE settings
+let NERDTreeShowHidden=1
 " syntastic config
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
@@ -140,18 +144,17 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
-" auto fmt terraform files on save
-let g:terraform_fmt_on_save=1
-" lsp configs
-if executable('solargraph')
-" gem install solargraph
-  au User lsp_setup call lsp#register_server({
-  \ 'name': 'solargraph',
-  \ 'cmd': {server_info->[&shell, &shellcmdflag, 'solargraph socket']}, 
-  \ 'whitelist': ['ruby'],
-  \ })
-endif
-set fillchars+=stl:\ ,stlnc:\
+
+""""""""""""""""""""""""""""
+"        mappings          "
+""""""""""""""""""""""""""""
+map <leader>nt :NERDTreeToggle<CR>
+
+""""""""""""""""""""""""""""
+"     autocmd stuff        "
+""""""""""""""""""""""""""""
+
+" load nerdtree at startup if no file or path specified
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 augroup configgroup
@@ -181,11 +184,7 @@ augroup configgroup
     autocmd BufEnter *.sh setlocal shiftwidth=2
     autocmd BufEnter *.sh setlocal softtabstop=2
 augroup END
-" Put these lines at the very end of your vimrc file.
 
-" Load all plugins now.
-" Plugins need to be added to runtimepath before helptags can be generated.
-packloadall
 " Load all of the helptags now, after plugins have been loaded.
 " All messages and errors will be ignored.
 silent! helptags ALL
