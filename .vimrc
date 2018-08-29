@@ -20,8 +20,8 @@ Plug 'ekalinin/Dockerfile.vim'
 " haproxy syntax highlighting
 Plug 'zimbatm/haproxy.vim'
 " Hashicorp stuff
-Plug 'hashivim/vim-terraform'
-Plug 'juliosueiras/vim-terraform-completion'
+Plug 'hashivim/vim-terraform', { 'for': 'terraform' }
+Plug 'juliosueiras/vim-terraform-completion', { 'for': 'terraform' }
 Plug 'hashivim/vim-packer'
 Plug 'hashivim/vim-vagrant'
 Plug 'hashivim/vim-consul'
@@ -32,7 +32,7 @@ Plug 'tpope/vim-markdown'
 " Git support
 Plug 'tpope/vim-fugitive'
 " puppet stuff
-Plug 'rodjek/vim-puppet'
+Plug 'rodjek/vim-puppet', { 'for': 'puppet' }
 " clojure support
 Plug 'tpope/vim-fireplace', { 'for': 'clojure' }
 Plug 'guns/vim-clojure-static', { 'for': 'clojure' }
@@ -127,10 +127,13 @@ set laststatus=2
 
 " airline status bar
 let g:airline_powerline_fonts = 1
+let g:airline#extensions#ale#enabled = 1
 if !exists('g:airline_symbols')
   let g:airline_symbols = {}
 endif
 " enable deoplete completions
+let g:deoplete#omni_patterns = {}
+let g:deoplete#omni_patterns.terraform = '[^ *\t"{=$]\w*'
 let g:deoplete#enable_at_startup = 1
 " terraform config
 let g:terraform_fmt_on_save=1
@@ -144,7 +147,6 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
-
 """"""""""""""""""""""""""""
 "        mappings          "
 """"""""""""""""""""""""""""
