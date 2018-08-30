@@ -131,6 +131,7 @@ let g:airline#extensions#ale#enabled = 1
 if !exists('g:airline_symbols')
   let g:airline_symbols = {}
 endif
+let g:airline#extensions#tabline#enabled = 1
 " enable deoplete completions
 let g:deoplete#omni_patterns = {}
 let g:deoplete#omni_patterns.terraform = '[^ *\t"{=$]\w*'
@@ -147,6 +148,11 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
+""""""""""""""""""""""""""""
+"       ale settings       "
+""""""""""""""""""""""""""""
+let g:ale_puppet_languageserver_executable = $HOME . "/development/puppet/puppet-editor-services/puppet-languageserver"
+let g:ale_fix_on_save = 1
 """"""""""""""""""""""""""""
 "        mappings          "
 """"""""""""""""""""""""""""
