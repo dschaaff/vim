@@ -75,7 +75,7 @@ endif
 Plug 'ryanoasis/vim-devicons'
 call plug#end()
 " Patched font for file icons
-set guifont=HackNerdFontCompleteM-Regular:h12
+"set guifont=HackNerdFontCompleteM-Regular:h12
 " show line numbering
 set number
 " Set to auto read when is changed outside vim
@@ -149,6 +149,7 @@ let g:deoplete#enable_at_startup = 1
 let g:terraform_fmt_on_save=1
 " NerdTREE settings
 let NERDTreeShowHidden=1
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 " syntastic config
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
