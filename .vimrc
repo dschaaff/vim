@@ -41,6 +41,7 @@ Plug 'clojure-vim/vim-cider', { 'for': 'clojure' }
 Plug 'luochen1990/rainbow', { 'for': 'clojure' }
 " ctags
 Plug 'majutsushi/tagbar'
+Plug 'ludovicchabant/vim-gutentags'
 " tpope goodness
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
@@ -50,12 +51,12 @@ Plug 'tpope/vim-commentary'
 " nerdtree stuff
 Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 " ablity to toggle indent guides
 Plug 'nathanaelkane/vim-indent-guides'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 " ruby and rails
-Plug 'hackhowtofaq/vim-solargraph'
 Plug 'vim-ruby/vim-ruby'
 Plug 'tpope/vim-rails'
 Plug 'elzr/vim-json'
@@ -64,12 +65,17 @@ Plug 'ctrlpvim/ctrlp.vim'
 Plug 'tpope/vim-endwise'
 Plug 'jiangmiao/auto-pairs'
 Plug 'martinda/Jenkinsfile-vim-syntax'
+Plug 'edkolev/tmuxline.vim'
 " smooth scrolling
 Plug 'yuttie/comfortable-motion.vim'
 if has('nvim')
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 endif
+" file icons
+Plug 'ryanoasis/vim-devicons'
 call plug#end()
+" Patched font for file icons
+set guifont=HackNerdFontCompleteM-Regular:h12
 " show line numbering
 set number
 " Set to auto read when is changed outside vim
@@ -108,7 +114,9 @@ syntax on
 filetype plugin on
 " stop hiding quotes in json
 let g:vim_json_syntax_conceal = 0
-" try to load neovim specific colorscheme
+" set Vim-specific sequences for RGB colors
+set t_8f=[38;2;%lu;%lu;%lum
+set t_8b=[48;2;%lu;%lu;%lum
 try
   colorscheme NeoSolarized
 catch
@@ -132,6 +140,7 @@ if !exists('g:airline_symbols')
   let g:airline_symbols = {}
 endif
 let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#gutentags#enabled = 1
 " enable deoplete completions
 let g:deoplete#omni_patterns = {}
 let g:deoplete#omni_patterns.terraform = '[^ *\t"{=$]\w*'
