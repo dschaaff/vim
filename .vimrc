@@ -12,6 +12,7 @@ filetype off
 " - For Neovim: ~/.local/share/nvim/plugged
 " - Avoid using standard Vim directory names like 'plugin'
 call plug#begin('~/.vim/plugged')
+Plug 'vim-scripts/AnsiEsc.vim'
 " ale linter
 Plug 'w0rp/ale'
 " git marks in gutter
@@ -33,6 +34,7 @@ Plug 'tpope/vim-markdown'
 Plug 'tpope/vim-fugitive'
 " puppet stuff
 Plug 'rodjek/vim-puppet', { 'for': 'puppet' }
+Plug 'davewongillies/vim-eyaml'
 " clojure support
 Plug 'tpope/vim-fireplace', { 'for': 'clojure' }
 Plug 'guns/vim-clojure-static', { 'for': 'clojure' }
@@ -60,22 +62,34 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'vim-ruby/vim-ruby'
 Plug 'tpope/vim-rails'
 Plug 'elzr/vim-json'
+" themes
+Plug 'dracula/vim', { 'as': 'dracula' }
+Plug 'romainl/flattened'
 Plug 'iCyMind/NeoSolarized'
+Plug 'joshdick/onedark.vim'
+" Search Stuff
+Plug '/usr/local/opt/fzf'
+Plug 'junegunn/fzf.vim'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'tpope/vim-endwise'
 Plug 'jiangmiao/auto-pairs'
 Plug 'martinda/Jenkinsfile-vim-syntax'
 Plug 'edkolev/tmuxline.vim'
+Plug 'stephpy/vim-yaml'
 " smooth scrolling
 Plug 'yuttie/comfortable-motion.vim'
 if has('nvim')
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+else
+  Plug 'Shougo/deoplete.nvim'
+  Plug 'roxma/nvim-yarp'
+  Plug 'roxma/vim-hug-neovim-rpc'
 endif
 " file icons
 Plug 'ryanoasis/vim-devicons'
 call plug#end()
 " Patched font for file icons
-"set guifont=HackNerdFontCompleteM-Regular:h12
+set guifont=Hack_NF:h12
 " show line numbering
 set number
 " Set to auto read when is changed outside vim
@@ -132,7 +146,7 @@ set laststatus=2
 """"""""""""""""""""""""""""
 " plugin specific settings "
 """"""""""""""""""""""""""""
-
+let g:terraform_align=1
 " airline status bar
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#ale#enabled = 1
@@ -143,7 +157,10 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#gutentags#enabled = 1
 " enable deoplete completions
 let g:deoplete#omni_patterns = {}
-let g:deoplete#omni_patterns.terraform = '[^ *\t"{=$]\w*'
+call deoplete#custom#option('omni_patterns', {
+\ 'complete_method': 'omnifunc',
+\ 'terraform': '[^ *\t"{=$]\w*',
+\})
 let g:deoplete#enable_at_startup = 1
 " terraform config
 let g:terraform_fmt_on_save=1
@@ -166,7 +183,8 @@ let g:ale_fix_on_save = 1
 """"""""""""""""""""""""""""
 "        mappings          "
 """"""""""""""""""""""""""""
-map <leader>nt :NERDTreeToggle<CR>
+map <leader>ntt :NERDTreeToggle<CR>
+map <leader>nts :NERDTreeFind<CR>
 
 """"""""""""""""""""""""""""
 "     autocmd stuff        "
@@ -175,6 +193,7 @@ map <leader>nt :NERDTreeToggle<CR>
 " load nerdtree at startup if no file or path specified
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+autocmd FileType jenkinsfile setlocal commentstring=#\ %s
 augroup configgroup
     autocmd!
     autocmd VimEnter * highlight clear SignColumn
@@ -196,6 +215,7 @@ augroup configgroup
     autocmd FileType ruby setlocal softtabstop=2
     autocmd FileType ruby setlocal commentstring=#\ %s
     autocmd FileType python setlocal commentstring=#\ %s
+    autocmd FileType yaml setlocal ai ts=2 sts=2 sw=2 et
     autocmd BufEnter *.cls setlocal filetype=java
     autocmd BufEnter Makefile setlocal noexpandtab
     autocmd BufEnter *.sh setlocal tabstop=2
