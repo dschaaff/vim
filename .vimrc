@@ -14,7 +14,11 @@ filetype off
 call plug#begin('~/.vim/plugged')
 Plug 'vim-scripts/AnsiEsc.vim'
 " ale linter
-Plug 'w0rp/ale'
+Plug 'w0rp/ale', { 'tag': 'v2.2.0' }
+" Golang
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+" support lots of languages
+Plug 'sheerun/vim-polyglot'
 " git marks in gutter
 Plug 'airblade/vim-gitgutter'
 Plug 'ekalinin/Dockerfile.vim'
@@ -79,7 +83,7 @@ Plug 'stephpy/vim-yaml'
 " smooth scrolling
 Plug 'yuttie/comfortable-motion.vim'
 if has('nvim')
-  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+  Plug 'Shougo/deoplete.nvim', { 'tag': '4.1', 'do': ':UpdateRemotePlugins' }
 else
   Plug 'Shougo/deoplete.nvim'
   Plug 'roxma/nvim-yarp'
@@ -88,6 +92,10 @@ endif
 " file icons
 Plug 'ryanoasis/vim-devicons'
 call plug#end()
+"disable polygot for golang
+if exists('g:loaded_polyglot')
+    let g:polyglot_disabled = ['go']
+endif
 " Patched font for file icons
 set guifont=Hack_NF:h12
 " show line numbering
