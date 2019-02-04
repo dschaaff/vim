@@ -57,8 +57,8 @@ Plug 'nathanaelkane/vim-indent-guides'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 " ruby and rails
-Plug 'vim-ruby/vim-ruby'
-Plug 'tpope/vim-rails'
+Plug 'vim-ruby/vim-ruby', { 'for': 'ruby' }
+Plug 'tpope/vim-rails', { 'for': 'ruby' }
 Plug 'elzr/vim-json'
 " themes
 Plug 'dracula/vim', { 'as': 'dracula' }
@@ -169,14 +169,6 @@ let g:terraform_fmt_on_save=1
 " NerdTREE settings
 let NERDTreeShowHidden=1
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-" syntastic config
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
 """"""""""""""""""""""""""""
 "       ale settings       "
 """"""""""""""""""""""""""""
