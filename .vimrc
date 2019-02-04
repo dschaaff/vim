@@ -14,7 +14,7 @@ filetype off
 call plug#begin('~/.vim/plugged')
 Plug 'vim-scripts/AnsiEsc.vim'
 " ale linter
-Plug 'w0rp/ale', { 'tag': 'v2.2.0' }
+Plug 'w0rp/ale', { 'tag': 'v2.3.0' }
 " Golang
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 " support lots of languages
@@ -39,12 +39,6 @@ Plug 'tpope/vim-fugitive'
 " puppet stuff
 Plug 'rodjek/vim-puppet', { 'for': 'puppet' }
 Plug 'davewongillies/vim-eyaml'
-" clojure support
-Plug 'tpope/vim-fireplace', { 'for': 'clojure' }
-Plug 'guns/vim-clojure-static', { 'for': 'clojure' }
-Plug 'venantius/vim-eastwood', { 'for': 'clojure' }
-Plug 'clojure-vim/vim-cider', { 'for': 'clojure' }
-Plug 'luochen1990/rainbow', { 'for': 'clojure' }
 " ctags
 Plug 'majutsushi/tagbar'
 Plug 'ludovicchabant/vim-gutentags'
