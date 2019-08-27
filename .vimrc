@@ -14,7 +14,7 @@ filetype off
 call plug#begin('~/.vim/plugged')
 Plug 'vim-scripts/AnsiEsc.vim'
 " ale linter
-Plug 'w0rp/ale', { 'tag': 'v2.3.0' }
+Plug 'w0rp/ale', { 'tag': 'v2.5.0' }
 " Golang
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 " support lots of languages
@@ -38,10 +38,14 @@ Plug 'tpope/vim-markdown'
 Plug 'tpope/vim-fugitive'
 " puppet stuff
 Plug 'rodjek/vim-puppet', { 'for': 'puppet' }
+" Chef Stuff
+Plug 'dougireton/vim-chef'
 Plug 'davewongillies/vim-eyaml'
+" Ansible
+Plug 'pearofducks/ansible-vim'
 " ctags
 Plug 'majutsushi/tagbar'
-Plug 'ludovicchabant/vim-gutentags'
+" Plug 'ludovicchabant/vim-gutentags'
 " tpope goodness
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
@@ -53,12 +57,14 @@ Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 " ablity to toggle indent guides
+Plug 'Yggdroot/indentLine'
 Plug 'nathanaelkane/vim-indent-guides'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 " ruby and rails
 Plug 'vim-ruby/vim-ruby', { 'for': 'ruby' }
 Plug 'tpope/vim-rails', { 'for': 'ruby' }
+" make vim json less annoying
 Plug 'elzr/vim-json'
 " themes
 Plug 'dracula/vim', { 'as': 'dracula' }
@@ -77,7 +83,7 @@ Plug 'stephpy/vim-yaml'
 " smooth scrolling
 Plug 'yuttie/comfortable-motion.vim'
 if has('nvim')
-  Plug 'Shougo/deoplete.nvim', { 'tag': '4.1', 'do': ':UpdateRemotePlugins' }
+  Plug 'Shougo/deoplete.nvim', {'tag': '5.0', 'do': ':UpdateRemotePlugins' }
 else
   Plug 'Shougo/deoplete.nvim'
   Plug 'roxma/nvim-yarp'
@@ -85,6 +91,7 @@ else
 endif
 " file icons
 Plug 'ryanoasis/vim-devicons'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 call plug#end()
 "disable polygot for golang
 if exists('g:loaded_polyglot')
@@ -158,15 +165,17 @@ endif
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#gutentags#enabled = 1
 " enable deoplete completions
-let g:deoplete#omni_patterns = {}
-call deoplete#custom#option('omni_patterns', {
-\ 'complete_method': 'omnifunc',
-\ 'terraform': '[^ *\t"{=$]\w*',
-\})
-let g:deoplete#enable_at_startup = 1
-" terraform config
+let g:terraform_registry_module_completion = 0
 let g:terraform_fmt_on_save=1
-" NerdTREE settings
+" let g:deoplete#omni_patterns = {}
+" call deoplete#custom#option('omni_patterns', {
+" \ 'complete_method': 'omnifunc',
+" \ 'terraform': '[^ *\t"{=$]\w*',
+" \ 'auto_complete_delay': 2
+" \})
+" call deoplete#initialize()
+let g:deoplete#enable_at_startup = 1
+"NerdTREE settings
 let NERDTreeShowHidden=1
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 """"""""""""""""""""""""""""
@@ -179,6 +188,10 @@ let g:ale_fix_on_save = 1
 """"""""""""""""""""""""""""
 map <leader>ntt :NERDTreeToggle<CR>
 map <leader>nts :NERDTreeFind<CR>
+""""""""""""""""""""""""""""
+"        commands          "
+""""""""""""""""""""""""""""
+com! FormatJSON %!jq .
 
 """"""""""""""""""""""""""""
 "     autocmd stuff        "
