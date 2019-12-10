@@ -33,7 +33,8 @@ Plug 'hashivim/vim-consul'
 Plug 'hashivim/vim-vaultproject'
 " vim easymotion for moving around
 Plug 'easymotion/vim-easymotion'
-Plug 'tpope/vim-markdown'
+Plug 'godlygeek/tabular'
+Plug 'plasticboy/vim-markdown'
 " Git support
 Plug 'tpope/vim-fugitive'
 " puppet stuff
@@ -71,6 +72,7 @@ Plug 'dracula/vim', { 'as': 'dracula' }
 Plug 'romainl/flattened'
 Plug 'iCyMind/NeoSolarized'
 Plug 'joshdick/onedark.vim'
+Plug 'mhartington/oceanic-next'
 " Search Stuff
 Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
@@ -79,11 +81,10 @@ Plug 'tpope/vim-endwise'
 Plug 'jiangmiao/auto-pairs'
 Plug 'martinda/Jenkinsfile-vim-syntax'
 Plug 'edkolev/tmuxline.vim'
-Plug 'stephpy/vim-yaml'
 " smooth scrolling
 Plug 'yuttie/comfortable-motion.vim'
 if has('nvim')
-  Plug 'Shougo/deoplete.nvim', {'tag': '5.0', 'do': ':UpdateRemotePlugins' }
+  Plug 'Shougo/deoplete.nvim', {'tag': '5.1', 'do': ':UpdateRemotePlugins' }
 else
   Plug 'Shougo/deoplete.nvim'
   Plug 'roxma/nvim-yarp'
@@ -135,13 +136,21 @@ set showmatch
 syntax on
 " load file type specific indent files
 filetype plugin on
+" fold code based on syntax by default
+set foldmethod=syntax
+set foldlevel=99
 " stop hiding quotes in json
 let g:vim_json_syntax_conceal = 0
 " set Vim-specific sequences for RGB colors
 set t_8f=[38;2;%lu;%lu;%lum
 set t_8b=[48;2;%lu;%lu;%lum
+if (has("termguicolors"))
+ set termguicolors
+endif
 try
-  colorscheme NeoSolarized
+  let g:oceanic_next_terminal_bold = 1
+  let g:oceanic_next_terminal_italic = 1
+  colorscheme OceanicNext
 catch
 endtry
 set background=dark
@@ -155,6 +164,14 @@ set laststatus=2
 """"""""""""""""""""""""""""
 " plugin specific settings "
 """"""""""""""""""""""""""""
+" indent line plugin
+"let g:indentLine_setColors = 0
+let g:indentLine_setConceal = 0
+" markdown
+let g:vim_markdown_conceal = 0
+let g:vim_markdown_frontmatter = 1  " for YAML format
+let g:vim_markdown_toml_frontmatter = 1  " for TOML format
+let g:vim_markdown_json_frontmatter = 1  " for JSON format
 let g:terraform_align=1
 " airline status bar
 let g:airline_powerline_fonts = 1
@@ -164,6 +181,7 @@ if !exists('g:airline_symbols')
 endif
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#gutentags#enabled = 1
+let g:airline_theme='oceanicnext'
 " enable deoplete completions
 let g:terraform_registry_module_completion = 0
 let g:terraform_fmt_on_save=1
@@ -178,7 +196,54 @@ let g:deoplete#enable_at_startup = 1
 "NerdTREE settings
 let NERDTreeShowHidden=1
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-""""""""""""""""""""""""""""
+" coc.vim
+set cmdheight=2
+set nobackup
+set nowritebackup
+set shortmess+=c
+set signcolumn=yes
+set updatetime=300
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+" Use `[c` and `]c` to navigate diagnostics
+nmap <silent> [c <Plug>(coc-diagnostic-prev)
+nmap <silent> ]c <Plug>(coc-diagnostic-next)
+
+" Remap keys for gotos
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" Use K to show documentation in preview window
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+
+" Highlight symbol under cursor on CursorHold
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+" Remap for rename current word
+nmap <leader>rn <Plug>(coc-rename)
+
+" Remap for format selected region
+xmap <leader>f  <Plug>(coc-format-selected)
+nmap <leader>f  <Plug>(coc-format-selected)
+" Use `:Format` to format current buffer
+command! -nargs=0 Format :call CocAction('format')
+" Add status line support, for integration with other plugin, checkout `:h coc-status`
+set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+
+"""""""""""""""""""""""""""
 "       ale settings       "
 """"""""""""""""""""""""""""
 let g:ale_puppet_languageserver_executable = $HOME . "/development/puppet/puppet-editor-services/puppet-languageserver"
@@ -222,9 +287,10 @@ augroup configgroup
     autocmd FileType ruby setlocal softtabstop=2
     autocmd FileType ruby setlocal commentstring=#\ %s
     autocmd FileType python setlocal commentstring=#\ %s
-    autocmd FileType yaml setlocal ai ts=2 sts=2 sw=2 et
+    autocmd FileType yaml setlocal ai ts=2 sts=2 sw=2 et foldmethod=indent
     autocmd BufEnter *.cls setlocal filetype=java
     autocmd BufEnter Makefile setlocal noexpandtab
+    autocmd BufEnter markdown setlocal setl conceallevel=0
     autocmd BufEnter *.sh setlocal tabstop=2
     autocmd BufEnter *.sh setlocal shiftwidth=2
     autocmd BufEnter *.sh setlocal softtabstop=2
