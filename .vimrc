@@ -14,19 +14,14 @@ filetype off
 call plug#begin('~/.vim/plugged')
 Plug 'vim-scripts/AnsiEsc.vim'
 " ale linter
-Plug 'w0rp/ale', { 'tag': 'v2.5.0' }
-" Golang
-Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+Plug 'w0rp/ale', { 'tag': 'v2.7.0' }
 " support lots of languages
 Plug 'sheerun/vim-polyglot'
 " git marks in gutter
 Plug 'airblade/vim-gitgutter'
 Plug 'ekalinin/Dockerfile.vim'
-" haproxy syntax highlighting
-Plug 'zimbatm/haproxy.vim'
 " Hashicorp stuff
 Plug 'hashivim/vim-terraform', { 'for': 'terraform' }
-Plug 'juliosueiras/vim-terraform-completion', { 'for': 'terraform' }
 Plug 'hashivim/vim-packer'
 Plug 'hashivim/vim-vagrant'
 Plug 'hashivim/vim-consul'
@@ -37,11 +32,8 @@ Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
 " Git support
 Plug 'tpope/vim-fugitive'
-" puppet stuff
-Plug 'rodjek/vim-puppet', { 'for': 'puppet' }
 " Chef Stuff
 Plug 'dougireton/vim-chef'
-Plug 'davewongillies/vim-eyaml'
 " Ansible
 Plug 'pearofducks/ansible-vim'
 " ctags
@@ -81,15 +73,10 @@ Plug 'tpope/vim-endwise'
 Plug 'jiangmiao/auto-pairs'
 Plug 'martinda/Jenkinsfile-vim-syntax'
 Plug 'edkolev/tmuxline.vim'
+" undotree to make undo history easier
+ Plug 'mbbill/undotree', {'tag': 'rel_6.1'}
 " smooth scrolling
 Plug 'yuttie/comfortable-motion.vim'
-if has('nvim')
-  Plug 'Shougo/deoplete.nvim', {'tag': '5.1', 'do': ':UpdateRemotePlugins' }
-else
-  Plug 'Shougo/deoplete.nvim'
-  Plug 'roxma/nvim-yarp'
-  Plug 'roxma/vim-hug-neovim-rpc'
-endif
 " file icons
 Plug 'ryanoasis/vim-devicons'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -99,7 +86,7 @@ if exists('g:loaded_polyglot')
     let g:polyglot_disabled = ['go']
 endif
 " Patched font for file icons
-set guifont=Hack_NF:h12
+set guifont=HackNerdFontCompleteM-Regular:h12
 " show line numbering
 set number
 " Set to auto read when is changed outside vim
@@ -139,6 +126,8 @@ filetype plugin on
 " fold code based on syntax by default
 set foldmethod=syntax
 set foldlevel=99
+" show hidden files in fzf
+let $FZF_DEFAULT_COMMAND = 'rg --hidden -l ""'
 " stop hiding quotes in json
 let g:vim_json_syntax_conceal = 0
 " set Vim-specific sequences for RGB colors
@@ -172,7 +161,6 @@ let g:vim_markdown_conceal = 0
 let g:vim_markdown_frontmatter = 1  " for YAML format
 let g:vim_markdown_toml_frontmatter = 1  " for TOML format
 let g:vim_markdown_json_frontmatter = 1  " for JSON format
-let g:terraform_align=1
 " airline status bar
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#ale#enabled = 1
@@ -182,27 +170,22 @@ endif
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#gutentags#enabled = 1
 let g:airline_theme='oceanicnext'
-" enable deoplete completions
-let g:terraform_registry_module_completion = 0
-let g:terraform_fmt_on_save=1
-" let g:deoplete#omni_patterns = {}
-" call deoplete#custom#option('omni_patterns', {
-" \ 'complete_method': 'omnifunc',
-" \ 'terraform': '[^ *\t"{=$]\w*',
-" \ 'auto_complete_delay': 2
-" \})
-" call deoplete#initialize()
-let g:deoplete#enable_at_startup = 1
+" don't use ale's lsp since I have coc running
+let g:ale_ignore_lsp = 1
 "NerdTREE settings
-let NERDTreeShowHidden=1
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+" let NERDTreeShowHidden=1
+" autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 " coc.vim
 set cmdheight=2
+set hidden
 set nobackup
 set nowritebackup
 set shortmess+=c
 set signcolumn=yes
 set updatetime=300
+" Don't pass messages to |ins-completion-menu|.
+set shortmess+=c
+
 
 function! s:check_back_space() abort
   let col = col('.') - 1
@@ -217,6 +200,9 @@ nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
+
+" Use <c-space> to trigger completion.
+inoremap <silent><expr> <c-space> coc#refresh()
 
 " Use K to show documentation in preview window
 nnoremap <silent> K :call <SID>show_documentation()<CR>
@@ -246,7 +232,6 @@ set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 """""""""""""""""""""""""""
 "       ale settings       "
 """"""""""""""""""""""""""""
-let g:ale_puppet_languageserver_executable = $HOME . "/development/puppet/puppet-editor-services/puppet-languageserver"
 let g:ale_fix_on_save = 1
 """"""""""""""""""""""""""""
 "        mappings          "
@@ -262,9 +247,6 @@ com! FormatJSON %!jq .
 "     autocmd stuff        "
 """"""""""""""""""""""""""""
 
-" load nerdtree at startup if no file or path specified
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 autocmd FileType jenkinsfile setlocal commentstring=#\ %s
 augroup configgroup
     autocmd!

@@ -1,2 +1,2 @@
-colorscheme cobalt2
-set guifont=Hack_NF:h12
+colorscheme OceanicNext
+set guifont=HackNerdFontCompleteM-Regular:h12
