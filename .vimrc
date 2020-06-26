@@ -19,7 +19,7 @@ Plug 'w0rp/ale', { 'tag': 'v2.7.0' }
 Plug 'sheerun/vim-polyglot'
 " git marks in gutter
 Plug 'airblade/vim-gitgutter'
-Plug 'ekalinin/Dockerfile.vim'
+Plug 'ekalinin/Dockerfile.vim', { 'for': 'Dockerfile' }
 " Hashicorp stuff
 Plug 'hashivim/vim-terraform', { 'for': 'terraform' }
 Plug 'hashivim/vim-packer'
@@ -32,8 +32,6 @@ Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
 " Git support
 Plug 'tpope/vim-fugitive'
-" Chef Stuff
-Plug 'dougireton/vim-chef'
 " Ansible
 Plug 'pearofducks/ansible-vim'
 " ctags
@@ -57,8 +55,6 @@ Plug 'vim-airline/vim-airline-themes'
 " ruby and rails
 Plug 'vim-ruby/vim-ruby', { 'for': 'ruby' }
 Plug 'tpope/vim-rails', { 'for': 'ruby' }
-" make vim json less annoying
-Plug 'elzr/vim-json'
 " themes
 Plug 'dracula/vim', { 'as': 'dracula' }
 Plug 'romainl/flattened'
@@ -70,13 +66,10 @@ Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'tpope/vim-endwise'
-Plug 'jiangmiao/auto-pairs'
 Plug 'martinda/Jenkinsfile-vim-syntax'
 Plug 'edkolev/tmuxline.vim'
 " undotree to make undo history easier
  Plug 'mbbill/undotree', {'tag': 'rel_6.1'}
-" smooth scrolling
-Plug 'yuttie/comfortable-motion.vim'
 " file icons
 Plug 'ryanoasis/vim-devicons'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -92,7 +85,7 @@ set number
 " Set to auto read when is changed outside vim
 set autoread
 " number of visual spaces per tab
-set tabstop=2
+set tabstop=4
 " use smart tabs http://vim.wikia.com/wiki/Indent_with_tabs,_align_with_spaces
 set smarttab
 " number of spaces when editing
@@ -127,7 +120,9 @@ filetype plugin on
 set foldmethod=syntax
 set foldlevel=99
 " show hidden files in fzf
-let $FZF_DEFAULT_COMMAND = 'rg --hidden -l ""'
+let $FZF_DEFAULT_COMMAND = 'rg --hidden --glob ''!.git'' -l ""'
+" ctrp settings
+let g:ctrlp_show_hidden=1
 " stop hiding quotes in json
 let g:vim_json_syntax_conceal = 0
 " set Vim-specific sequences for RGB colors
@@ -173,8 +168,8 @@ let g:airline_theme='oceanicnext'
 " don't use ale's lsp since I have coc running
 let g:ale_ignore_lsp = 1
 "NerdTREE settings
-" let NERDTreeShowHidden=1
-" autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+let NERDTreeShowHidden=1
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 " coc.vim
 set cmdheight=2
 set hidden
@@ -186,7 +181,7 @@ set updatetime=300
 " Don't pass messages to |ins-completion-menu|.
 set shortmess+=c
 
-
+nnoremap <silent> <space>y  :<C-u>CocList -A --normal yank<cr>
 function! s:check_back_space() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
@@ -248,35 +243,6 @@ com! FormatJSON %!jq .
 """"""""""""""""""""""""""""
 
 autocmd FileType jenkinsfile setlocal commentstring=#\ %s
-augroup configgroup
-    autocmd!
-    autocmd VimEnter * highlight clear SignColumn
-    autocmd BufWritePre *.php,*.py,*.js,*.txt,*.hs,*.java,*.md
-                \:call <SID>StripTrailingWhitespaces()
-    autocmd FileType java setlocal noexpandtab
-    autocmd FileType java setlocal list
-    autocmd FileType java setlocal listchars=tab:+\ ,eol:-
-    autocmd FileType java setlocal formatprg=par\ -w80\ -T4
-    autocmd FileType groovy setlocal tabstop=2
-    autocmd FileType groovy setlocal softtabstop=2
-    autocmd FileType groovy setlocal shiftwidth=2
-    autocmd FileType php setlocal expandtab
-    autocmd FileType php setlocal list
-    autocmd FileType php setlocal listchars=tab:+\ ,eol:-
-    autocmd FileType php setlocal formatprg=par\ -w80\ -T4
-    autocmd FileType ruby setlocal tabstop=2
-    autocmd FileType ruby setlocal shiftwidth=2
-    autocmd FileType ruby setlocal softtabstop=2
-    autocmd FileType ruby setlocal commentstring=#\ %s
-    autocmd FileType python setlocal commentstring=#\ %s
-    autocmd FileType yaml setlocal ai ts=2 sts=2 sw=2 et foldmethod=indent
-    autocmd BufEnter *.cls setlocal filetype=java
-    autocmd BufEnter Makefile setlocal noexpandtab
-    autocmd BufEnter markdown setlocal setl conceallevel=0
-    autocmd BufEnter *.sh setlocal tabstop=2
-    autocmd BufEnter *.sh setlocal shiftwidth=2
-    autocmd BufEnter *.sh setlocal softtabstop=2
-augroup END
 
 " Load all of the helptags now, after plugins have been loaded.
 " All messages and errors will be ignored.
